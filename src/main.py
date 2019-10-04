@@ -12,7 +12,9 @@ import mss
 import datetime
 
 # This is on my second monitor so need to move the bounding box away from the first 
-monitor = {"top": 1680-1366+160, "left": 1680+250, "width": 850, "height": 475}
+# Monitor 1: 1680x1050
+# Monitor 2: 1366x768
+monitor = {"top": 1050-768+190, "left": 1680+250, "width": 850, "height": 475}
 
 # Some statics!
 kernel = cv.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
@@ -60,15 +62,14 @@ def screen_record():
                     rect = cv2.boundingRect(c) # create box around movement
                     if rect[2] < min_rect_size or rect[3] < min_rect_size: continue # check to see if movement is greater than a specific size
                     # at this point we found something!
-                    found += 1 # increase counter
-                    image_counter +=1 
+                    found += 1 # increase counter                    
                     x,y,w,h = rect
                     cv2.rectangle(diff,(x,y),(x+w,y+h),(0,0,255),2) # draw a box on the image
                 
                 if found > 0: # we found something! yell, scream, party!
                     d = datetime.datetime.now().strftime('%Y/%m/%d-%H:%M:%S')
                     print image_counter, "I FOUND SOMETHING! It happened at:", d
-                    
+                    image_counter +=1 
                     last_known_capture = "Last Sighting: %s" % d
                     last_known_image = diff
                     
