@@ -1,6 +1,6 @@
 ## `youtubewatcher`
 
-A python script detected movement in an otherwise motionless/still video (like on youtube)
+A python script that detects movement/frame difference in an otherwise still video (like on youtube)
 
 ## Why? 
 So I can idle and look for pokemon in the Galar Live Footage video event here: https://www.youtube.com/watch?v=Ya3CyVN5S_w
