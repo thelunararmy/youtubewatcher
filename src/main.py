@@ -19,9 +19,9 @@ monitor = {"top": 1050-768+190, "left": 1680+250, "width": 850, "height": 475}
 # Some statics!
 kernel = cv.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 size_to_capture = 300
-threshold_min = 25
-min_rect_size = 8
-blur_size = 21
+threshold_min = 30
+min_rect_size = 10
+blur_size = 9
 
 # Dont flood my PC with images while I sleep!
 IMAGE_MAX = 500
@@ -86,8 +86,8 @@ def screen_record():
                     merged = ImagePhalanx([printscreen,ImageVertigo([tinydiff,tinydebug])],2)        
                     
                     # save images to device
-                    d = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')
-                    cv.imwrite("found/HD/"+d+"_HD.png",merged)
+                    d = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+                    cv.imwrite("found/HD/"+d+"_"+"%d"%image_counter+"_HD.png",merged)
                     # cv.imwrite("found/"+d+".png",ImageVertigo([diff]))
             
             if image_counter > IMAGE_MAX:
