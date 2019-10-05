@@ -15,11 +15,18 @@ OpenCV (cv2) is a bit trickier, google it and good luck!
 
 ## How?
 Clone the repo.
+
 Create a `found` folder under src and then a `HD` folder inside found.
+
 Open the stream on an empty part of your desktop.
+
 Edit `src` line 17 to put the video inside the capture box.
+
 Tweak the values on lines 20 to 24 as needed.
+
 If something moves (or differs) from the first frame of the video feed then it should be detected.
+
+If something is detected in the frame then that frame is saved in `found/HD`.
 
 ## Results ?
 With a little tweaking it can find movement and track it pretty well as long as the background doesnt change too much. Here are some of the Pokemon I found during the Galar Streaming event. 
