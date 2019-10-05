@@ -64,7 +64,7 @@ def screen_record():
                     # at this point we found something!
                     found += 1 # increase counter                    
                     x,y,w,h = rect
-                    cv2.rectangle(diff,(x,y),(x+w,y+h),(255,0,255),2) # draw a box on the image
+                    cv2.rectangle(diff,(x,y),(x+w,y+h),(255,0,255),3) # draw a box on the image
                 
                 if found > 0: # we found something! yell, scream, party!
                     d = datetime.datetime.now().strftime('%Y/%m/%d-%H:%M:%S')
