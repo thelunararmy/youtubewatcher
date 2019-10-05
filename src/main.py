@@ -54,7 +54,7 @@ def screen_record():
                 
                 ret,thresh = cv.threshold(diff,threshold_min,255,0) # find movement and remove noise 
                 thresh = cv.morphologyEx(thresh, cv.MORPH_DILATE, kernel,iterations=3) 
-                debug = thresh
+                debug = thresh.copy()
                 _, contours, _ = cv.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE) # isolate movement
                 diff = printscreen2.copy()
                 found = 0 # count how many movement pieces we found
@@ -76,13 +76,14 @@ def screen_record():
                     # Merged image
                     
                     tinydiff = RescaleImageToHeight(diff, 100)
+                    tinydebug = RescaleImageToHeight(debug, 100)
                     '''
                     merged = printscreen.copy()
                     tinyH,tinyW,_ = tinydiff.shape
                     mergH,mergW,_ = merged.shape
                     merged[mergH-tinyH:mergH,mergW-tinyW:mergW] = tinydiff   
                     '''
-                    merged = ImagePhalanx([printscreen,tinydiff],2)        
+                    merged = ImagePhalanx([printscreen,ImageVertigo([tinydiff,tinydebug])],2)        
                     
                     # save images to device
                     d = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')
