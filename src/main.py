@@ -20,7 +20,7 @@ monitor = {"top": 1050-768+190, "left": 1680+250, "width": 850, "height": 475}
 kernel = cv.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 size_to_capture = 300
 threshold_min = 25
-min_rect_size = 5
+min_rect_size = 8
 blur_size = 21
 
 # Dont flood my PC with images while I sleep!
@@ -64,7 +64,7 @@ def screen_record():
                     # at this point we found something!
                     found += 1 # increase counter                    
                     x,y,w,h = rect
-                    cv2.rectangle(diff,(x,y),(x+w,y+h),(0,0,255),2) # draw a box on the image
+                    cv2.rectangle(diff,(x,y),(x+w,y+h),(255,0,255),2) # draw a box on the image
                 
                 if found > 0: # we found something! yell, scream, party!
                     d = datetime.datetime.now().strftime('%Y/%m/%d-%H:%M:%S')
@@ -73,10 +73,21 @@ def screen_record():
                     last_known_capture = "Last Sighting: %s" % d
                     last_known_image = diff
                     
+                    # Merged image
+                    
+                    tinydiff = RescaleImageToHeight(diff, 100)
+                    '''
+                    merged = printscreen.copy()
+                    tinyH,tinyW,_ = tinydiff.shape
+                    mergH,mergW,_ = merged.shape
+                    merged[mergH-tinyH:mergH,mergW-tinyW:mergW] = tinydiff   
+                    '''
+                    merged = ImagePhalanx([printscreen,tinydiff],2)        
+                    
                     # save images to device
                     d = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')
-                    cv.imwrite("found/HD/"+d+"_HD.png",printscreen)
-                    cv.imwrite("found/"+d+".png",ImageVertigo([diff]))
+                    cv.imwrite("found/HD/"+d+"_HD.png",merged)
+                    # cv.imwrite("found/"+d+".png",ImageVertigo([diff]))
             
             if image_counter > IMAGE_MAX:
                 print "Reached IMAGE MAX at", datetime.datetime.now().strftime('%Y/%m/%d-%H:%M:%S')
