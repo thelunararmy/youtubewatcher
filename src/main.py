@@ -19,12 +19,12 @@ monitor = {"top": 1050-768+190, "left": 1680+250, "width": 850, "height": 475}
 # Some statics!
 kernel = cv.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
 size_to_capture = 300
-threshold_min = 30
-min_rect_size = 3
-blur_size = 9
+threshold_min = 25
+min_rect_size = 5
+blur_size = 21
 
 # Dont flood my PC with images while I sleep!
-IMAGE_MAX = 200
+IMAGE_MAX = 500
 
 
 def screen_record(): 
@@ -53,7 +53,7 @@ def screen_record():
                 diff = cv.absdiff(gray,o1) # subtracts OG frame from current frame
                 
                 ret,thresh = cv.threshold(diff,threshold_min,255,0) # find movement and remove noise 
-                thresh = cv.morphologyEx(thresh, cv.MORPH_OPEN, kernel) 
+                thresh = cv.morphologyEx(thresh, cv.MORPH_DILATE, kernel,iterations=3) 
                 debug = thresh
                 _, contours, _ = cv.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE) # isolate movement
                 diff = printscreen2.copy()
@@ -74,7 +74,7 @@ def screen_record():
                     last_known_image = diff
                     
                     # save images to device
-                    d = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+                    d = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')
                     cv.imwrite("found/HD/"+d+"_HD.png",printscreen)
                     cv.imwrite("found/"+d+".png",ImageVertigo([diff]))
             
@@ -92,7 +92,7 @@ def screen_record():
             #@print('loop took {} seconds'.format(time.time()-last_time))
             last_time = time.time()
             # handle screen
-            cv2.imshow('Video tracker',resultimg)
+            cv2.imshow('Videotracker Press Q to Stop',resultimg)
             if cv2.waitKey(25) & 0xFF == ord('q'):
                 cv2.destroyAllWindows()
                 break
